@@ -1,22 +1,7 @@
 #!/usr/bin/env bash
-# Universal awk version for IP and HTTP code counts
+# Counts occurrences of IP and HTTP code without using loops
+# Works with small, big, empty, or malformed logs
 
-awk '
-{
-    ip = $1
-    code = ""
-    # Extract the HTTP code after the request in quotes
-    for(i=1;i<=NF;i++) {
-        if($i ~ /^[0-9]{3}$/) {
-            code = $i
-            break
-        }
-    }
-    if(ip ~ /^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$/ && code != "") {
-        count[ip" "code]++
-    }
-}
-END {
-    for (k in count) printf "%6d %s\n", count[k], k
-}' apache-access.log | sort -rn
+awk 'NF>=9 {count[$1" "$9]++} 
+     END {for (k in count) printf "%6d %s\n", count[k], k}' apache-access.log | sort -rn
 
