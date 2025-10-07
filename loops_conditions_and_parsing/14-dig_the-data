@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# This script counts occurrences of IP and HTTP code in Apache logs
+# and sorts them from greatest to lowest
+
+awk '{count[$1" "$9]++} END {for (ipcode in count) printf "%6d %s\n", count[ipcode], ipcode}' apache-access.log | sort -rn
