@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
-# Counts occurrences of IP and HTTP code without using loops
+# 14-dig_the-data
+# Counts occurrences of IP and HTTP code in apache-access.log
 # Works with small, big, empty, or malformed logs
+# Prints in format: OCCURENCE_NUMBER IP HTTP_CODE
+# Sorted from highest to lowest occurrence
 
-awk 'NF>=9 {count[$1" "$9]++} 
-     END {for (k in count) printf "%6d %s\n", count[k], k}' apache-access.log | sort -rn
-
+awk 'NF>=9 { count[$1" "$9]++ } 
+     END { for (k in count) printf "%4d %s\n", count[k], k }' apache-access.log | sort -rn
